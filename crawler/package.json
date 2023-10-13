@@ -1,0 +1,26 @@
+{
+  "name": "crypto-viz-scrapper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development DEBUG=1 WEBDRIVER_BINARY_PATH='./src/drivers/chromedriver' nodemon main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.5.0",
+    "cheerio": "^1.0.0-rc.10",
+    "cross-env": "^7.0.3",
+    "dayjs": "^1.11.10",
+    "express": "^4.18.2",
+    "jsonschema": "^1.4.1",
+    "selenium-webdriver": "^4.1.1",
+    "yaml": "^2.3.2"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.3",
+    "nodemon": "^2.0.15"
+  }
+}

@@ -1,0 +1,91 @@
+domain: "u.today"
+tag: "latest"
+tasks:
+  - type: "navigate"
+    params:
+      url: "https://u.today/latest-cryptocurrency-news"
+  - type: "checkPresence"
+    params:
+      timeout: 1000
+      cssSelector: "body > div.page-container.container > div > main"
+  - type: "extract"
+    params:
+      cssSelector: "main .category-item .category-item__title-link"
+      extractAttributes:
+        text:
+          as: "title"
+        href:
+          as: "link"
+    tasks:
+      - type: "navigate"
+        params:
+          url: "$link"
+      - type: "checkPresence"
+        params:
+          timeout: 1000
+          cssSelector: "main .article"
+      - type: "checkPresence"
+        params:
+          timeout: 1000
+          cssSelector: "main .article .article_main-info__humble"
+      - type: "extract"
+        params:
+          cssSelector: "main .article .article_main-info__humble .time"
+          formatter:
+            type: Date
+            regexMatch: '\d{2}\/\d{2}\/\d{4}\s\-\s\d{2}:\d{2}'
+            valueFormat: "MM/DD/YYYY - hh:mm"
+          extractAttributes:
+            text:
+              as: "publishedAt"
+
+      - type: "checkPresence"
+        params:
+          timeout: 1000
+          cssSelector: "main .article .article__content"
+      - type: "extract"
+        params:
+          cssSelector: "main .article .article__content"
+          extractAttributes:
+            text:
+              as: "content"
+      - type: "checkPresence"
+        params:
+          timeout: 1000
+          cssSelector: "main .article .about-author"
+      - type: "checkPresence"
+        params:
+          timeout: 1000
+          cssSelector: "main .article .about-author .about-author_name"
+      - type: "extract"
+        params:
+          cssSelector: "main .article .about-author .about-author_name"
+          extractAttributes:
+            text:
+              as: "authorName"
+      - type: "checkPresence"
+        params:
+          timeout: 1000
+          cssSelector: "main .article .about-author .about-author_name"
+      - type: "extract"
+        params:
+          cssSelector: "main .article .about-author .about-author_name"
+          extractAttributes:
+            text:
+              as: "authorName"
+
+      - type: "checkPresence"
+        params:
+          timeout: 1000
+          cssSelector: "main .article .about-author .social"
+      - type: "extract"
+        params:
+          cssSelector: "main .article .about-author .social .social__link"
+          extractAttributes:
+            href:
+              as: "authorLink"
+
+webhook:
+  url: "http://webhook-server:9000"
+  headers:
+    Authorization: "Basic xxxx"

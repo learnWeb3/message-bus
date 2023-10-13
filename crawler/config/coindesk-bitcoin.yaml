@@ -1,0 +1,73 @@
+domain: "condesk.com"
+tag: "latest"
+tasks:
+  - type: "navigate"
+    params:
+      url: "https://www.coindesk.com/tag/bitcoin"
+  - type: "checkPresence"
+    params:
+      timeout: 1000
+      cssSelector: "body > div.layout-container"
+  - type: "extract"
+    params:
+      cssSelector: "body > div.layout-container > .card-title"
+      extractAttributes:
+        text:
+          as: "title"
+        href:
+          as: "link"
+    tasks:
+      - type: "navigate"
+        params:
+          url: "$link"
+      - type: "checkPresence"
+        params:
+          timeout: 1000
+          cssSelector: ".at-created"
+      - type: "extract"
+        params:
+          cssSelector: ".at-created"
+          formatter:
+            type: Date
+            replacements:
+              - regex: "p.m."
+                replacement: "pm"
+              - regex: "a.m."
+                replacement: "am"
+            regexMatch: ".*"
+            valueFormat: "MMM DD, YYYY at hh:mm a"
+          extractAttributes:
+            text:
+              as: "publishedAt"
+
+      - type: "checkPresence"
+        params:
+          timeout: 1000
+          cssSelector: ".at-content-wrapper"
+      - type: "extract"
+        params:
+          cssSelector: ".at-content-wrapper"
+          extractAttributes:
+            text:
+              as: "content"
+      - type: "checkPresence"
+        params:
+          timeout: 1000
+          cssSelector: ".at-authors a"
+      - type: "extract"
+        params:
+          cssSelector: ".at-authors a"
+          extractAttributes:
+            text:
+              as: "authorName"
+      - type: "extract"
+        params:
+          cssSelector: ".at-authors a"
+          extractAttributes:
+            href:
+              as: "authorLink"
+
+webhook:
+  url: "http://webhook-server:9000"
+  headers:
+    Authorization: "Basic xxxx"

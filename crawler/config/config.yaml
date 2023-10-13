@@ -1,0 +1,56 @@
+domain: "www.cryptocompare.com"
+tag: "price-feed"
+tasks:
+  - type: "navigate"
+    params:
+      url: "https://www.cryptocompare.com/coins/list/all/USD/1"
+  - type: "checkPresence"
+    params:
+      timeout: 1000
+      cssSelector: ".table-coins"
+  - type: "extract"
+    params:
+      cssSelector: "td.name a h3 span.mobile-name"
+      extractAttributes:
+        text:
+          as: "name"
+  - type: "extract"
+    params:
+      cssSelector: "td.price div.current-price-value"
+      formatter:
+        type: Number
+        replacements:
+          - regex: '[\$\,a-zA-Z]'
+            replacement: ""
+        regexMatch: ".*"
+      extractAttributes:
+        text:
+          as: "price"
+  - type: "extract"
+    params:
+      cssSelector: "td.volume"
+      formatter:
+        type: Number
+        replacements:
+          - regex: '[\$\,a-zA-Z]'
+            replacement: ""
+        regexMatch: ".*"
+      extractAttributes:
+        text:
+          as: "volume"
+  - type: "extract"
+    params:
+      cssSelector: "td.volume"
+      formatter:
+        type: Unit
+        replacements:
+          - regex: '[\$\,\d\.]'
+            replacement: ""
+        regexMatch: ".*"
+      extractAttributes:
+        text:
+          as: "volumeUnit"
+webhook:
+  url: "http://task-producer-deployment-service.crypto-viz.svc.cluster.local:9000"
+  headers:
+    Authorization: "Basic xxxx"

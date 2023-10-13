@@ -1,0 +1,69 @@
+services:
+  # selenium-server:
+  #   networks:
+  #     - common
+  #   image: seleniarm/standalone-chromium
+  #   shm_size: 2gb
+  # environment:
+  # - START_XVFB=false
+  # ports:
+  # - 4444:4444
+  # - 7900:7900
+  # crawler-data-manager:
+  #   networks:
+  #     - common
+  #   build:
+  #     context: ./crawler-data-manager
+  #     dockerfile: Dockerfile
+  #   # ports:
+  #   #   - 9000:9000
+  crawler:
+    networks:
+      - common
+    # depends_on:
+      # - selenium-server
+      # - crawler-data-manager
+    build:
+      context: ./crawler
+      dockerfile: Dockerfile
+    image: antoineleguillou/crawler:latest
+    environment:
+      # - SELENIUM_SERVER_URL=http://selenium-server:4444
+      - WEBDRIVER_BINARY_PATH=/usr/bin/chromedriver
+      - DEBUG="0"
+    shm_size: '2gb'
+    volumes:
+      - ./crawler/config/config.yaml:/usr/share/crawler/config.yaml
+
+  # keywords-extractor:
+  #   networks:
+  #     - common
+  #   build:
+  #     context: ./keywords-extractor
+  #     dockerfile: Dockerfile
+  #   image: antoineleguillou/keywords-extractor:latest
+  #   ports:
+  #     - 3000:80
+
+  # sentiment-extractor:
+  #   networks:
+  #     - common
+  #   build:
+  #     context: ./sentiment-extractor
+  #     dockerfile: Dockerfile
+  #   image: antoineleguillou/sentiment-extractor:latest
+  #   ports:
+  #     - 4000:80
+
+  # summarizer:
+  #   networks:
+  #     - common
+  #   build:
+  #     context: ./summarizer
+  #     dockerfile: Dockerfile
+  #   # image: antoineleguillou/summarizer:latest
+  #   ports:
+  #     - 5000:80
+
+networks:
+  common:

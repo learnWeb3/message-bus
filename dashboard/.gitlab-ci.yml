@@ -1,0 +1,42 @@
+stages:
+  - test
+  - build
+  # - deploy
+
+variables:
+  DOCKER_IMAGE_TAG: $CI_COMMIT_BRANCH-$CI_COMMIT_SHA
+test:
+  stage: test
+  image: cypress/base:18.16.0
+  script:
+    - npm install --loglevel verbose
+    - npm run component:headless
+
+build:
+  stage: build
+  tags:
+    - docker
+  image: docker:latest
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+
+  services:
+    - docker:dind
+
+  before_script:
+    - docker info
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+    - docker pull $CI_REGISTRY:latest || true
+    - docker build --cache-from $CI_REGISTRY:latest -t $CI_REGISTRY:$DOCKER_IMAGE_TAG .
+    - docker image tag $CI_REGISTRY:$DOCKER_IMAGE_TAG $CI_REGISTRY:latest
+    - docker push $CI_REGISTRY:latest
+# deploy:
+#   stage: deploy
+#   image:
+#     name: bitnami/kubectl:latest
+#     entrypoint: [""]
+#   script:
+#     - kubectl config get-contexts
+#     - kubectl config use-context andrew1143107/k8s:gitlab-agent
+#     - kubectl apply -f ${CI_PROJECT_DIR}/k8s/andrew-management.deployment.yaml -n andrew-staging
