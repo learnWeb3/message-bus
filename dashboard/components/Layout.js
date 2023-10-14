@@ -41,7 +41,13 @@ export default function Layout({ children }) {
       <OidcProvider
         sessionLostComponent={() => (
           <FullScreenContainer>
-            <Error />
+            <Error
+              label="Authentication Session Lost"
+              description="Please log in again to continue securely."
+              descriptionDetails={null}
+              backAction={null}
+              homeAction={() => window.location.href = '/'}
+            />
           </FullScreenContainer>
         )}
         authenticatingComponent={() => (
@@ -51,7 +57,13 @@ export default function Layout({ children }) {
         )}
         authenticatingErrorComponent={() => (
           <FullScreenContainer>
-            <Error />
+            <Error
+              label="Authentication error"
+              description="Please log in again to continue securely."
+              descriptionDetails={null}
+              backAction={null}
+              homeAction={() => window.location.href = '/'}
+            />
           </FullScreenContainer>
         )}
         loadingComponent={() => (
@@ -61,15 +73,22 @@ export default function Layout({ children }) {
         )}
         serviceWorkerNotSupportedComponent={() => (
           <FullScreenContainer>
-            <Error />
+            <Error
+              label="Service Worker Not Supported"
+              description="Your browser does not support service workers."
+              descriptionDetails="Please consider using a modern browser that supports service workers for an optimal user experience."
+              backAction={null}
+              homeAction={() => window.location.href = '/'}
+            />
           </FullScreenContainer>
         )}
         configuration={configuration}
         onEvent={onEvent}
         withCustomHistory={withCustomHistory}
       >
-        <main classNameName="bg-red-600">{children}</main>
+        <main className="bg-gray-900">{children}</main>
       </OidcProvider>
+
     </>
   );
 }

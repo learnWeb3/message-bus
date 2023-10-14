@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { EventContext } from "../context/EventContext";
 import { MqttClient } from "../services/MqttClient";
+import { useDebounce } from "../hooks/useDebounce";
 
 export function EventHandler({
   children,
@@ -16,6 +17,8 @@ export function EventHandler({
   },
 }) {
   const [events, setEvents] = useState({});
+  const [eventsBuffer, setEventsBuffer] = useState({});
+
   useEffect(() => {
     const MQTT_CLIENT = new MqttClient({
       clientId: "dashboard",
@@ -23,12 +26,18 @@ export function EventHandler({
       auth,
       topics,
       onMessage: (topic, message) => {
-        setEvents(formatter(message, events));
+        setEventsBuffer(formatter(message, events));
       },
     });
 
     return () => MQTT_CLIENT && MQTT_CLIENT.close();
   }, []);
+
+  const debouncedEvents = useDebounce(eventsBuffer, 250);
+
+  useEffect(() => {
+    setEvents(eventsBuffer);
+  }, [eventsBuffer]);
 
   return (
     <EventContext.Provider value={{ events, setEvents }}>

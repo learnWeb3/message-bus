@@ -2,9 +2,17 @@
 
 This project has for main goal the demonstration the usage/need of a message queue/message bus in order to bufferize a high frequency message stream to prevent data losses, manage resources consumptions and requirements in a constrained environnement.
 
-This project emphasize the need of message queue/message bus for post processing in downstream (AI webservice processing) wich thighten furthermore the resources available for other webservices and require efficient RAM and CPU management to prevent unwanted webservice crashes and service unavailability.
+[OLD Specs]
 
-## [Global Architecture](https://lucid.app/lucidchart/a63640f3-302e-4be3-b97a-377150e65bb5/edit?viewport_loc=38%2C17%2C2579%2C1283%2C0_0&invitationId=inv_da990175-86b5-44e4-a53e-95c7b5b7f238)
+This project emphasize the need of a message queue / message bus for post processing in downstream (AI webservice processing) wich thighten furthermore the resources available for other webservices and require efficient RAM and CPU management to prevent unwanted webservice crashes and service unavailability.
+
+[NEW Specs]
+
+This project emphasize the need of a message queue / message bus in order to buffer incoming messages (huge message loads comming from potentially hundreds/thousands scrappers registering data at the same time) wich could present a major risk of outage for the system due to resources exhaustion. 
+In case of a particularly high load the post processings tasks responsible web services (writing data to database / data analysis / data processing) would not be able to handle all the messages which could result in data losses, system resources exhaustion and thus a dgrading end user experience.
+
+
+## [Global Architecture](https://lucid.app/lucidchart/6fabd449-761e-4098-9956-bca3707ec29b/edit?viewport_loc=492%2C249%2C1989%2C991%2C0_0&invitationId=inv_e88251e7-4b5d-4468-8f9e-80b9bff8760f)
 
 ## [UML Sequence diagram](https://lucid.app/lucidchart/70003df8-5de8-4109-a0e3-8bfab8a0ef94/edit?viewport_loc=-267%2C-59%2C3970%2C1975%2C0_0&invitationId=inv_7de0c604-9411-474d-838c-565ee0023041)
 
@@ -398,3 +406,26 @@ MQTT_PUBLISH_ROOT_TOPIC=""
 ## [Dashboard](./dashboard/)
 
 Next js dashboard application secured using OPENID connect authenticating users using the keycloak authentication server.
+
+The dashboard leverages the MQTT broker and Opensearch cluster setup to optimize data fetching and rendering.
+
+On load of the dashboard a list of crypto coins with summarized information about price actions is displayed.
+
+From there the user can access a detailed chart with live price feed and ability to access price history.
+
+## [Infrastructure]
+
+All microservices are deployed in a Kubernetes cluster in a specific namespace. 
+
+## [Security]
+
+All externally accessible services are authenticated.
+Kafka and Opensearch nodes secured through RBAC.
+Keycloak authorization server has been set up to handle users and roles in a proefficient maneer.
+
+For obvious cost reasons traffic inside the cluster has not been encrypted this would be feasible using [Istio service mesh](https://istio.io/).
+
+## [Monitoring]
+
+For obvious cost reasons monitoring has not been set up, nevertheless the [Prometheus/Grafana tools suite](https://prometheus.io/) would be a perfect match to follow services availability, monitor crashes [Alert Manager](https://prometheus.io/docs/alerting/latest/alertmanager/) would comes handy to send notifications on monitored events.
+

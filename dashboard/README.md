@@ -1,11 +1,6 @@
-# Andrew management
+# Crypto viz Dashboar 
 
-This repository contains the code related to the admin panel for the Andrew application's ecosystem.
-
-It uses open id connect authorization code grant flow (standard flow) in order to authenticate the user against a third party authorization server (keycloak)
-
-[Go to Andrew management application](https://andrew-management.students-epitech.ovh/)
-
+This repository contains the code for the cryptoviz visulaization dashboard
 
 ## Displayed data
 

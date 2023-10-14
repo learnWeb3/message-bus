@@ -1,5 +1,5 @@
 {
-  "name": "task_producer",
+  "name": "task-consumer",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,7 +12,8 @@
   "dependencies": {
     "amqplib": "^0.10.3",
     "axios": "^1.5.1",
-    "express": "^4.18.2",
-    "kafkajs": "^2.2.4"
+    "kafkajs": "^2.2.4",
+    "mqtt": "^5.1.0",
+    "nanoid": "^3.3.4"
   }
 }

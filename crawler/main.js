@@ -29,13 +29,18 @@ async function main() {
 
     // send data over http 
     if (webhook?.url) {
+      console.log(webhook)
       const options = {};
       if (webhook.headers) {
         Object.assign(options, webhook.headers)
       }
-      await axios.post(webhook.url, { tag, data: crawlerData, timestamp: Date.now() }, options)
-        .then(() => console.log(`successfully HTTP POSTed crawled data to ${webhook.url}`))
-        .catch((error) => console.error(`Failed HTTP POST crawled data to ${webhook.url} reason ${error}`));
+      try {
+        await axios.post(webhook.url, { tag, data: crawlerData, timestamp: Date.now() }, options)
+        console.log(`successfully HTTP POSTed crawled data to ${webhook.url}`)
+      } catch (error) {
+        console.log(error)
+        console.error(`Failed HTTP POST crawled data to ${webhook.url} reason ${error}`)
+      }
     }
 
     process.exit(0)

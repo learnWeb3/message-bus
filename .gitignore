@@ -4,3 +4,8 @@ k8s
 .DS_Store
 utils
 models
+yaml
+__pycache__
+.vscode
+!sentiment-extractor/utils
+!summarizer/utils

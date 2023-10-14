@@ -10,10 +10,20 @@
   },
   "dependencies": {
     "@axa-fr/react-oidc": "^7.3.3",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/styled-engine-sc": "^6.0.0-alpha.2",
+    "@mui/x-date-pickers": "^6.16.2",
+    "apexcharts": "^3.44.0",
+    "axios": "^1.5.1",
+    "dayjs": "^1.11.10",
+    "lightweight-charts": "^4.1.0",
     "mqtt": "^5.0.5",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-apexcharts": "^1.4.1",
+    "react-dom": "latest",
+    "styled-components": "^6.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.15",

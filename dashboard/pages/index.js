@@ -1,9 +1,7 @@
-import { OidcSecure, useOidcAccessToken } from "@axa-fr/react-oidc";
+import { OidcSecure } from "@axa-fr/react-oidc";
 import Layout from "../components/Layout";
 import { EventHandler } from "../components/EventHandler";
 import { CryptoPriceFeed } from "../components/CryptoPriceFeed";
-import { useState } from "react";
-
 
 export const getServerSideProps = (async (context) => {
   const MQTT_BROKER_HOST_URL = process.env.MQTT_BROKER_HOST_URL
@@ -24,7 +22,6 @@ export default function HomePage({
   MQTT_AUTH_USERNAME = "",
   MQTT_AUTH_PASSWORD
 }) {
-  const { accessToken } = useOidcAccessToken();
 
   return (
     <OidcSecure>
@@ -48,8 +45,8 @@ export default function HomePage({
           }
           return { ...events };
         }}>
-        <div>{JSON.stringify(accessToken)}</div>
-        {/* <CryptoPriceFeed /> */}
+        {/* <div>{JSON.stringify(accessToken)}</div> */}
+        <CryptoPriceFeed />
       </EventHandler>
     </OidcSecure >
   );
